@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "kampusbank"
+version = "0.1.0"
+description = "Application bancaire de bureau développée en Python"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "bcrypt>=4.0",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.10",
+    "ruff>=0.6",
+]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/kampusbank"]
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88

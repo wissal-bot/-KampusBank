@@ -1,0 +1,13 @@
+README.md
+pyproject.toml
+src/kampusbank/__init__.py
+src/kampusbank.egg-info/PKG-INFO
+src/kampusbank.egg-info/SOURCES.txt
+src/kampusbank.egg-info/dependency_links.txt
+src/kampusbank.egg-info/requires.txt
+src/kampusbank.egg-info/top_level.txt
+src/kampusbank/config/__init__.py
+src/kampusbank/domaine/__init__.py
+src/kampusbank/ihm/__init__.py
+src/kampusbank/persistance/__init__.py
+src/kampusbank/service/__init__.py

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: kampusbank
+Version: 0.1.0
+Summary: Application bancaire de bureau développée en Python
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: bcrypt>=4.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: mypy>=1.10; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
