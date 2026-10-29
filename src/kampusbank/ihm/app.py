@@ -4,12 +4,14 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from kampusbank.domaine.exceptions import KampusBankError
+from kampusbank.domaine.user import Role
 from kampusbank.ihm.connexion_view import ConnexionView
 from kampusbank.ihm.inscription_view import InscriptionView
 from kampusbank.persistance.user_repository import InMemoryUserRepository
 from kampusbank.service.authentification_service import (
     AuthentificationService,
 )
+from kampusbank.service.demo_service import creer_admin_demo
 from kampusbank.service.inscription_service import InscriptionService
 from kampusbank.service.session_service import SessionService
 
@@ -24,10 +26,13 @@ class KampusBankApp(tk.Tk):
         self.geometry("500x550")
         self.resizable(False, False)
 
-        # Dépôt temporaire des utilisateurs en mémoire.
+        # Un seul repository partagé par toute l'application.
         self._repository = InMemoryUserRepository()
 
-        # Services métier.
+        # Création de l'administrateur de démonstration.
+        creer_admin_demo(self._repository)
+
+        # Tous les services utilisent le même repository.
         self._inscription_service = InscriptionService(
             self._repository
         )
@@ -189,7 +194,10 @@ class KampusBankApp(tk.Tk):
             f"Bienvenue {user.prenom} {user.nom}.",
         )
 
-        self._afficher_espace_client()
+        if user.role == Role.ADMIN:
+            self._afficher_espace_admin()
+        else:
+            self._afficher_espace_client()
 
     def _afficher_espace_client(self) -> None:
         """Affiche l'espace du client connecté."""
@@ -213,6 +221,64 @@ class KampusBankApp(tk.Tk):
         )
         titre.pack(
             pady=(60, 15),
+        )
+
+        role = ttk.Label(
+            conteneur,
+            text="Espace client",
+            font=("Arial", 12, "bold"),
+        )
+        role.pack(
+            pady=5,
+        )
+
+        email = ttk.Label(
+            conteneur,
+            text=user.email,
+        )
+        email.pack(
+            pady=5,
+        )
+
+        bouton_deconnexion = ttk.Button(
+            conteneur,
+            text="Se déconnecter",
+            command=self._deconnecter,
+        )
+        bouton_deconnexion.pack(
+            pady=30,
+        )
+
+    def _afficher_espace_admin(self) -> None:
+        """Affiche l'espace de l'administrateur connecté."""
+        self._effacer_fenetre()
+
+        user = self._session_service.exiger_admin()
+
+        conteneur = ttk.Frame(
+            self,
+            padding=40,
+        )
+        conteneur.pack(
+            expand=True,
+            fill="both",
+        )
+
+        titre = ttk.Label(
+            conteneur,
+            text="Espace administrateur",
+            font=("Arial", 22, "bold"),
+        )
+        titre.pack(
+            pady=(60, 15),
+        )
+
+        bienvenue = ttk.Label(
+            conteneur,
+            text=f"Bienvenue {user.prenom} {user.nom}",
+        )
+        bienvenue.pack(
+            pady=5,
         )
 
         email = ttk.Label(
