@@ -1,6 +1,7 @@
 """Modèle métier représentant un utilisateur de KampusBank."""
 
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 
 
@@ -22,5 +23,5 @@ class User:
     telephone: str
     mot_de_passe_hash: str
     role: Role = Role.CLIENT
-    est_bloque: bool = False
     tentatives_connexion: int = 0
+    bloque_jusqu_a: datetime | None = None
